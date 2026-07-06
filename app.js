@@ -1,11 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
 import jobs from "./routes/jobs.js";
+import { connectDB } from "./config/database.js";
 
 const app = express();
 
 // setting up env file
 dotenv.config();
+
+// Connecting to database
+connectDB();
 
 // define routes
 app.use("/api/v1", jobs);
