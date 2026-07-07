@@ -5,6 +5,9 @@ import { connectDB } from "./config/database.js";
 
 const app = express();
 
+// Setup body parser
+app.use(express.json());
+
 // setting up env file
 dotenv.config();
 
