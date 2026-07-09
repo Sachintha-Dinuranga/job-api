@@ -1,10 +1,13 @@
 import Job from "../models/jobsModel.js";
 
 // Get all jobs => /api/v1/jobs
-export const getJobs = (req, res, next) => {
+export const getJobs = async (req, res, next) => {
+  const jobs = await Job.find({});
+
   res.status(200).json({
     succuss: true,
-    message: "This route will display all the jobs in future",
+    message: "All the jobs are fetched",
+    data: jobs,
   });
 };
 

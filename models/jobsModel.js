@@ -96,11 +96,9 @@ const jobSchema = new mongoose.Schema({
 });
 
 //Creating job slug before saving
-jobSchema.pre("save", function (next) {
+jobSchema.pre("save", async function () {
   // creating slug for saving to db
   this.slug = slugify(this.title, { lower: true });
-
-  next();
 });
 
 const Job = mongoose.model("Job", jobSchema);
