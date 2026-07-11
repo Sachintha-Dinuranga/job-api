@@ -26,6 +26,25 @@ export const getJobsById = async (req, res, next) => {
   });
 };
 
+// get a single job with id and slug => /api/v1/jobs/:id/:slug
+export const getJobsByIdAndSlug = async (req, res, next) => {
+  const job = await Job.find({
+    $and: [{ _id: req.params.id }, { slug: req.params.slug }],
+  });
+
+  if (!job || job.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "Job not found.",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: job,
+  });
+};
+
 // Create a new job => /api/v1/jobs
 export const createJobs = async (req, res, next) => {
   const job = await Job.create(req.body);
@@ -44,7 +63,7 @@ export const updateJobsById = async (req, res, next) => {
   let job = await Job.findById(id);
 
   if (!job) {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       message: "Job not found",
     });
@@ -70,7 +89,7 @@ export const deleteJobs = async (req, res, next) => {
   let job = await Job.findById(id);
 
   if (!job) {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       message: "Job not found",
     });

@@ -4,15 +4,18 @@ import {
   deleteJobs,
   getJobs,
   getJobsById,
+  getJobsByIdAndSlug,
   updateJobsById,
 } from "../controllers/jobsController.js";
 const router = express.Router();
 
 router.route("/jobs").get(getJobs);
 
-router.route("/jobs").post(createJobs);
-
 router.route("/jobs/:id").get(getJobsById);
+
+router.route("/jobs/:id/:slug").get(getJobsByIdAndSlug);
+
+router.route("/jobs").post(createJobs);
 
 router.route("/jobs/:id").put(updateJobsById);
 
