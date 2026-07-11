@@ -67,7 +67,16 @@ export const updateJobsById = async (req, res, next) => {
 export const deleteJobs = async (req, res, next) => {
   const { id } = req.params;
 
-  const job = await Job.findByIdAndDelete(id);
+  let job = await Job.findById(id);
+
+  if (!job) {
+    res.status(404).json({
+      success: false,
+      message: "Job not found",
+    });
+  }
+
+  job = await Job.findByIdAndDelete(id);
 
   res.status(200).json({
     success: true,
