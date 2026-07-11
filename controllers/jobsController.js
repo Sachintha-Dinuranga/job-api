@@ -41,7 +41,20 @@ export const createJobs = async (req, res, next) => {
 export const updateJobsById = async (req, res, next) => {
   const { id } = req.params;
 
-  const job = await Job.findByIdAndUpdate(id, { new: true });
+  let job = await Job.findById(id);
+
+  if (!job) {
+    res.status(404).json({
+      success: false,
+      message: "Job not found",
+    });
+  }
+
+  job = await Job.findByIdAndUpdate(id, req.body, {
+    returnDocument: "after",
+    runValidators: true,
+    useFindAndModify: false,
+  });
 
   res.status(200).json({
     succuss: true,
