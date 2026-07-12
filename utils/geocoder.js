@@ -9,8 +9,8 @@ const options = {
   formatter: null,
 };
 
-console.log("Provider:", process.env.GEOCODER_PROVIDER);
-console.log("API Key:", process.env.GEOCODER_API_KEY);
+// console.log("Provider:", process.env.GEOCODER_PROVIDER);
+// console.log("API Key:", process.env.GEOCODER_API_KEY);
 
 const geocoder = NodeGeocoder(options);
 
