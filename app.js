@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import jobs from "./routes/jobs.js";
 import { connectDB } from "./config/database.js";
+import errorMiddleware from "./middlewares/errorMiddleware.js";
 
 // setting up env file
 dotenv.config();
@@ -16,6 +17,9 @@ connectDB();
 
 // define routes
 app.use("/api/v1", jobs);
+
+// Middleware to handle errors
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

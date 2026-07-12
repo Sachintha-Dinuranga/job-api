@@ -1,5 +1,6 @@
 import Job from "../models/jobsModel.js";
 import mongoose from "mongoose";
+import ErrorHandler from "../utils/errorHandler.js";
 
 // Get all jobs => /api/v1/jobs
 export const getJobs = async (req, res, next) => {
@@ -63,10 +64,7 @@ export const updateJobsById = async (req, res, next) => {
   let job = await Job.findById(id);
 
   if (!job) {
-    return res.status(404).json({
-      success: false,
-      message: "Job not found",
-    });
+    return next(new ErrorHandler("Job not found", 404));
   }
 
   job = await Job.findByIdAndUpdate(id, req.body, {
