@@ -7,6 +7,13 @@ import errorMiddleware from "./middlewares/errorMiddleware.js";
 // setting up env file
 dotenv.config();
 
+// Handling uncaught exceptions
+process.on("uncaughtException", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log("Shutting down due to uncaught exceptions");
+  process.exit(1);
+});
+
 const app = express();
 
 // Setup body parser
