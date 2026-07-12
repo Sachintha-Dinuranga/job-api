@@ -94,7 +94,7 @@ export const deleteJobs = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
-  job = await Job.findByIdAndDelete(id);
+  await Job.findByIdAndDelete(id);
 
   res.status(200).json({
     success: true,
