@@ -1,9 +1,10 @@
 import Job from "../models/jobsModel.js";
 import mongoose from "mongoose";
 import ErrorHandler from "../utils/errorHandler.js";
+import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
 // Get all jobs => /api/v1/jobs
-export const getJobs = async (req, res, next) => {
+export const getJobs = catchAsyncErrors(async (req, res, next) => {
   const jobs = await Job.find({});
 
   res.status(200).json({
@@ -12,10 +13,10 @@ export const getJobs = async (req, res, next) => {
     results: jobs.length,
     data: jobs,
   });
-};
+});
 
 // Get a job by id => /api/v1/jobs:id
-export const getJobsById = async (req, res, next) => {
+export const getJobsById = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
 
   const job = await Job.findById(id);
@@ -25,10 +26,10 @@ export const getJobsById = async (req, res, next) => {
     message: "Single job has been fetched.",
     data: job,
   });
-};
+});
 
 // get a single job with id and slug => /api/v1/jobs/:id/:slug
-export const getJobsByIdAndSlug = async (req, res, next) => {
+export const getJobsByIdAndSlug = catchAsyncErrors(async (req, res, next) => {
   const job = await Job.find({
     $and: [{ _id: req.params.id }, { slug: req.params.slug }],
   });
@@ -44,10 +45,10 @@ export const getJobsByIdAndSlug = async (req, res, next) => {
     success: true,
     data: job,
   });
-};
+});
 
 // Create a new job => /api/v1/jobs
-export const createJobs = async (req, res, next) => {
+export const createJobs = catchAsyncErrors(async (req, res, next) => {
   const job = await Job.create(req.body);
 
   res.status(201).json({
@@ -55,10 +56,10 @@ export const createJobs = async (req, res, next) => {
     message: "Job Created",
     data: job,
   });
-};
+});
 
 // Update a job  => /api/v1/jobs:id
-export const updateJobsById = async (req, res, next) => {
+export const updateJobsById = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
 
   let job = await Job.findById(id);
@@ -78,10 +79,10 @@ export const updateJobsById = async (req, res, next) => {
     message: "Single job has been updated.",
     data: job,
   });
-};
+});
 
 // delete a job => api/v1/jobs:id
-export const deleteJobs = async (req, res, next) => {
+export const deleteJobs = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
 
   let job = await Job.findById(id);
@@ -99,4 +100,4 @@ export const deleteJobs = async (req, res, next) => {
     success: true,
     message: "Job Deleted",
   });
-};
+});
