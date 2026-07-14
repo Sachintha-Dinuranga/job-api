@@ -2,10 +2,14 @@ import Job from "../models/jobsModel.js";
 import mongoose from "mongoose";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
+import APIFilters from "../utils/apiFilters.js";
 
 // Get all jobs => /api/v1/jobs
 export const getJobs = catchAsyncErrors(async (req, res, next) => {
-  const jobs = await Job.find({});
+  const apiFilters = new APIFilters(Job.find(), req.query);
+  apiFilters.filter();
+
+  const jobs = await apiFilters.query;
 
   res.status(200).json({
     succuss: true,
