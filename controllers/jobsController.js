@@ -2,10 +2,15 @@ import Job from "../models/jobsModel.js";
 import mongoose from "mongoose";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
+import APIFilters from "../utils/apiFilters.js";
 
 // Get all jobs => /api/v1/jobs
 export const getJobs = catchAsyncErrors(async (req, res, next) => {
-  const jobs = await Job.find({});
+  const apiFilters = new APIFilters(Job.find(), req.query);
+  apiFilters.filter();
+  apiFilters.sort();
+
+  const jobs = await apiFilters.query;
 
   res.status(200).json({
     succuss: true,
@@ -35,10 +40,7 @@ export const getJobsByIdAndSlug = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!job || job.length === 0) {
-    return res.status(404).json({
-      success: false,
-      message: "Job not found.",
-    });
+    return next(new ErrorHandler("Job not found", 404));
   }
 
   res.status(200).json({
@@ -88,10 +90,7 @@ export const deleteJobs = catchAsyncErrors(async (req, res, next) => {
   let job = await Job.findById(id);
 
   if (!job) {
-    return res.status(404).json({
-      success: false,
-      message: "Job not found",
-    });
+    return next(new ErrorHandler("Job not found", 404));
   }
 
   await Job.findByIdAndDelete(id);

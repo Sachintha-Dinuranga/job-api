@@ -1,3 +1,5 @@
+import ErrorHandler from "../utils/errorHandler.js";
+
 export default (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal Server Error";
@@ -16,7 +18,19 @@ export default (err, req, res, next) => {
 
     error.message = err.message;
 
-    res.status(err.statusCode).json({
+    // wrong mongoose object id error
+    if (err.name === "CastError") {
+      const message = `Resource not found. Invalid ${err.path}`;
+      error = new ErrorHandler(message, 404);
+    }
+
+    // handling mongoose validation errors
+    if (err.name === "ValidationError") {
+      const message = Obaject.values(err.errors).map((value) => value.message);
+      error = new ErrorHandler(message, 400);
+    }
+
+    res.status(error.statusCode).json({
       success: false,
       message: error.message || "Internal Server Error",
     });
