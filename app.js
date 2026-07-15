@@ -1,9 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
-import jobs from "./routes/jobs.js";
-import { connectDB } from "./config/database.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import ErrorHandler from "./utils/errorHandler.js";
+import jobs from "./routes/jobs.js";
+import auth from "./routes/auth.js";
+import { connectDB } from "./config/database.js";
 
 // setting up env file
 dotenv.config();
@@ -25,6 +26,7 @@ connectDB();
 
 // define routes
 app.use("/api/v1", jobs);
+app.use("/api/v1", auth);
 
 // Handle unhandled routes
 app.all(/.*/, (req, res, next) => {
