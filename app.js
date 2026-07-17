@@ -5,6 +5,7 @@ import ErrorHandler from "./utils/errorHandler.js";
 import jobs from "./routes/jobs.js";
 import auth from "./routes/auth.js";
 import { connectDB } from "./config/database.js";
+import cookieParser from "cookie-parser";
 
 // setting up env file
 dotenv.config();
@@ -20,6 +21,9 @@ const app = express();
 
 // Setup body parser
 app.use(express.json());
+
+// set cookie parser
+app.use(cookieParser());
 
 // Connecting to database
 connectDB();

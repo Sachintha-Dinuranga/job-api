@@ -1,6 +1,7 @@
 import User from "../models/users.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import sendToken from "../utils/jwtToken.js";
 
 // Register a new user => /api/v1/register
 export const registerUSer = catchAsyncErrors(async (req, res, next) => {
@@ -14,13 +15,7 @@ export const registerUSer = catchAsyncErrors(async (req, res, next) => {
   });
 
   // Create jwt token
-  const token = user.getJwtToken();
-
-  res.status(200).json({
-    success: true,
-    message: "User is registered.",
-    token,
-  });
+  sendToken(user, 200, res);
 });
 
 // Login user => /api/v1/login
@@ -46,11 +41,6 @@ export const loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
 
-  // Create JSON web token
-  const token = user.getJwtToken();
-
-  res.status(200).json({
-    success: true,
-    token,
-  });
+  // Create jwt token
+  sendToken(user, 200, res);
 });
