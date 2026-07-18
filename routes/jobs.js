@@ -23,8 +23,20 @@ router
   .route("/jobs")
   .post(isAuthenticatedUser, authorizedRoles("employeer", "admin"), createJobs);
 
-router.route("/jobs/:id").put(isAuthenticatedUser, updateJobsById);
+router
+  .route("/jobs/:id")
+  .put(
+    isAuthenticatedUser,
+    authorizedRoles("employeer", "admin"),
+    updateJobsById,
+  );
 
-router.route("/jobs/:id").delete(isAuthenticatedUser, deleteJobs);
+router
+  .route("/jobs/:id")
+  .delete(
+    isAuthenticatedUser,
+    authorizedRoles("employeer", "admin"),
+    deleteJobs,
+  );
 
 export default router;
